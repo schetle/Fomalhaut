@@ -40,6 +40,8 @@ namespace ecs {
 		auto Has() const -> typename std::enable_if<sizeof...(Args) != 0, bool>::type;
 
 		BaseComponent* GetComponent(const index_t index) const;
+        const std::map<index_t, BaseComponent*>& GetAllComponents() const { return components_; }
+
 	private:
 		Entity& AddComponent(const index_t index, BaseComponent* component);
 		Entity& RemoveComponent(const index_t index);
