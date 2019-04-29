@@ -45,7 +45,7 @@ namespace ecs
 
 		ComponentVector& GetAllComponents(index_t id);
 	private:
-		void DestoryAllSysytems();
+		void DestroyAllSystems();
 		void DestroyAllEntities();
 	};
 

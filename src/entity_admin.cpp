@@ -5,7 +5,7 @@ using namespace ecs;
 
 EntityAdmin::~EntityAdmin()
 {
-	DestoryAllSysytems();
+	DestroyAllSystems();
 	DestroyAllEntities();
 }
 
@@ -32,7 +32,7 @@ void ecs::EntityAdmin::DestroyEntity(EntityID eid)
 	}
 }
 
-void EntityAdmin::DestoryAllSysytems()
+void EntityAdmin::DestroyAllSystems()
 {
 	for (BaseSystem* sys : systems_)
 	{
