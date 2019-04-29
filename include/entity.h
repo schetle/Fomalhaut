@@ -48,7 +48,7 @@ namespace ecs {
 		void Destroy();
 		void ReplaceWith(const index_t index, BaseComponent* replacement);
 
-		void DestroyAllComponent();
+		void DestroyAllComponents();
 	};
 
 	template <typename T, typename... TArgs>
