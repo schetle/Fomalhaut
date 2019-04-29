@@ -11,12 +11,13 @@ EntityAdmin::~EntityAdmin()
 
 void ecs::EntityAdmin::Update(float time_step)
 {
-	for (BaseSystem* s : systems_) {
+	for (BaseSystem* s : systems_)
+	{
 		s->Update(time_step);
 	}
 }
 
-Entity * ecs::EntityAdmin::FindEntity(EntityID eid)
+Entity* ecs::EntityAdmin::FindEntity(EntityID eid)
 {
 	auto it = entities_.find(eid);
 	return (it == entities_.end()) ? nullptr : it->second;

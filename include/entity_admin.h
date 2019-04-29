@@ -9,11 +9,10 @@
 #include "base_system.h"
 #include "component_pool.h"
 
-namespace ecs
-{
+namespace ecs {
 	class Entity;
-	class EntityAdmin
-	{
+
+	class EntityAdmin {
 	private:
 		std::vector<BaseSystem*> systems_;
 		std::unordered_map<EntityID, Entity*> entities_;
@@ -24,14 +23,14 @@ namespace ecs
 		~EntityAdmin();
 		void Update(float time_step);
 
-		template<class S>
+		template <class S>
 		S& CreateSystem();
-		template<class S>
+		template <class S>
 		void RemoveSystem();
-		template<class S>
+		template <class S>
 		bool HasSystem();
 
-		template<class E>
+		template <class E>
 		Entity& CreateEntity();
 		Entity* FindEntity(EntityID eid);
 		void DestroyEntity(EntityID eid);
@@ -49,13 +48,14 @@ namespace ecs
 		void DestroyAllEntities();
 	};
 
-	template<class S>
+	template <class S>
 	S& EntityAdmin::CreateSystem()
 	{
 		ECS_ASSERT_IS_SYSTEM(S);
 		ECS_ASSERT(!HasSystem<S>(), "System already exists");
 		index_t system_index = details::SystemIndex::index<S>();
-		if (system_index >= systems_.size()) {
+		if (system_index >= systems_.size())
+		{
 			systems_.resize(system_index + 1, nullptr);
 		}
 		S* sys = new S(this);
@@ -63,7 +63,7 @@ namespace ecs
 		return *sys;
 	}
 
-	template<class S>
+	template <class S>
 	void EntityAdmin::RemoveSystem()
 	{
 		ECS_ASSERT_IS_SYSTEM(S);
@@ -72,14 +72,15 @@ namespace ecs
 		systems_[details::SystemIndex::index<S>()] = nullptr;
 	}
 
-	template<class S>
+	template <class S>
 	bool EntityAdmin::HasSystem()
 	{
 		ECS_ASSERT_IS_SYSTEM(S);
-		return systems_.size() > details::SystemIndex::index<S>() && systems_[details::SystemIndex::index<S>()] != nullptr;
+		return systems_.size() > details::SystemIndex::index<S>() && systems_[details::SystemIndex::index<S>()] !=
+			nullptr;
 	}
 
-	template<class E>
+	template <class E>
 	Entity& ecs::EntityAdmin::CreateEntity()
 	{
 		ECS_ASSERT_IS_ENTITY(E);

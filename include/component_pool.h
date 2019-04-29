@@ -6,19 +6,18 @@
 #include "ecs_functional.h"
 #include "base_component.h"
 
-namespace ecs
-{
-	class BaseComponent;
-	using ComponentVector = std::vector<BaseComponent*>;
-    class ComponentPool
-    {
-	private:
+namespace ecs {
+    class BaseComponent;
+    using ComponentVector = std::vector<BaseComponent*>;
+
+    class ComponentPool {
+    private:
         std::map<index_t, ComponentVector> component_pools_;
 
     public:
         template <class C, typename... Args>
         BaseComponent* CreateComponent(Args&&... args);
-		void RemoveComponent(index_t id, BaseComponent* component);
+        void RemoveComponent(index_t id, BaseComponent* component);
 
         ComponentVector& GetAllComponents(index_t id);
     };

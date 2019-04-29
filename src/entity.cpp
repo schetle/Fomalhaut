@@ -4,14 +4,16 @@
 
 using namespace ecs;
 
-Entity::Entity(ComponentPool& pool, EntityID eid) : pool_(pool), eid_(eid) {}
+Entity::Entity(ComponentPool& pool, EntityID eid)
+	: pool_(pool), eid_(eid)
+{}
 
 Entity::~Entity()
 {
 	DestroyAllComponents();
 }
 
-Entity& Entity::AddComponent(const index_t index, BaseComponent* component) 
+Entity& Entity::AddComponent(const index_t index, BaseComponent* component)
 {
 	ECS_ASSERT(!HasComponent(index), "Error, cannot add component to entity, component already exists");
 	components_[index] = component;
@@ -19,14 +21,14 @@ Entity& Entity::AddComponent(const index_t index, BaseComponent* component)
 	return *this;
 }
 
-Entity& Entity::RemoveComponent(const index_t index) 
+Entity& Entity::RemoveComponent(const index_t index)
 {
 	ECS_ASSERT(HasComponent(index), "Error, cannot remove component to entity, component not exists");
 	ReplaceWith(index, nullptr);
 	return *this;
 }
 
-Entity& Entity::ReplaceComponent(const index_t index, BaseComponent* component) 
+Entity& Entity::ReplaceComponent(const index_t index, BaseComponent* component)
 {
 	if (HasComponent(index))
 	{
@@ -50,19 +52,19 @@ BaseComponent* Entity::GetComponent(const index_t index) const
 	return components_.at(index);
 }
 
-bool Entity::HasComponent(const index_t index) const 
-{ 
+bool Entity::HasComponent(const index_t index) const
+{
 	return (components_.find(index) != components_.end());
 }
 
-void Entity::Destroy() {}
+void Entity::Destroy()
+{}
 
-void Entity::ReplaceWith(const index_t index, BaseComponent * replacement)
+void Entity::ReplaceWith(const index_t index, BaseComponent* replacement)
 {
 	BaseComponent* prev_component = GetComponent(index);
 	if (prev_component == replacement)
-	{
-	}
+	{ }
 	else
 	{
 		//onRemove

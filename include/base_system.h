@@ -1,16 +1,16 @@
 #pragma once
 
-namespace ecs
-{
+namespace ecs {
 	class EntityAdmin;
-	class BaseSystem
-	{
+
+	class BaseSystem {
 	protected:
-		EntityAdmin* admin_{ nullptr };
+		EntityAdmin* admin_{nullptr};
 	public:
 		BaseSystem(EntityAdmin* admin);
 		virtual ~BaseSystem() = default;
 
-		virtual void Update(float time_step) {}
+		virtual void Update(float time_step)
+		{}
 	};
 }

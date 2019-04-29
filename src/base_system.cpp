@@ -3,7 +3,6 @@
 
 using namespace ecs;
 
-BaseSystem::BaseSystem(EntityAdmin* admin) : admin_(admin)
-{
-
-}
+BaseSystem::BaseSystem(EntityAdmin* admin)
+    : admin_(admin)
+{}

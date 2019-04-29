@@ -2,32 +2,38 @@
 
 #include "ecs_functional.h"
 
-namespace ecs
-{
+namespace ecs {
 	class Entity;
-    class BaseComponent
-    {
-    protected:
-		Entity* ent_{ nullptr };
 
-    public:
+	class BaseComponent {
+	protected:
+		Entity* ent_{nullptr};
+
+	public:
 		BaseComponent() = default;
-        virtual ~BaseComponent() = default;
+		virtual ~BaseComponent() = default;
 
-		void SetOwner(Entity* ent) { ent_ = ent; }
-		Entity* Owner() { return ent_; }
+		void SetOwner(Entity* ent)
+		{
+			ent_ = ent;
+		}
 
-        template <typename C>
-        C* As();
-        template <typename C>
-        C const* As() const;
+		Entity* Owner()
+		{
+			return ent_;
+		}
 
-		template<class C>
+		template <typename C>
+		C* As();
+		template <typename C>
+		C const* As() const;
+
+		template <class C>
 		C* Sibling();
 
 	private:
 		BaseComponent* SiblingComponent(const index_t index);
-    };
+	};
 
 	template <typename C>
 	C* BaseComponent::As()
@@ -43,7 +49,7 @@ namespace ecs
 		return static_cast<C*>(this);
 	}
 
-	template<class C>
+	template <class C>
 	C* BaseComponent::Sibling()
 	{
 		ECS_ASSERT_IS_COMPONENT(C);

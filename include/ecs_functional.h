@@ -4,22 +4,24 @@
 #include <type_traits>
 #include <tuple>
 
-namespace ecs
-{
-    namespace details
-    {
-		template<class...> struct conjunction : std::true_type { };
-		template<class B1> struct conjunction<B1> : B1 { };
-		template<class B1, class... Bn>
+namespace ecs {
+	namespace details {
+		template <class...>
+		struct conjunction : std::true_type { };
+
+		template <class B1>
+		struct conjunction<B1> : B1 { };
+
+		template <class B1, class... Bn>
 		struct conjunction<B1, Bn...>
 			: std::conditional_t<bool(B1::value), conjunction<Bn...>, B1> {};
-		template<class... B>
+
+		template <class... B>
 		constexpr bool conjunction_v = conjunction<B...>::value;
 
 
 		template <typename T>
-		struct remove_const_and_reference
-		{
+		struct remove_const_and_reference {
 			using type = typename std::remove_reference<typename std::remove_const<T>::type>::type;
 		};
 
@@ -34,7 +36,10 @@ namespace ecs
 
 		template <typename F, typename Tuple, size_t Total, size_t... N>
 		struct apply_impl<F, Tuple, true, Total, N...> {
-			static bool call(F f, Tuple&& t) { return f(std::get<N>(std::forward<Tuple>(t))...); }
+			static bool call(F f, Tuple&& t)
+			{
+				return f(std::get<N>(std::forward<Tuple>(t))...);
+			}
 		};
 
 		// user invokes this
@@ -42,8 +47,9 @@ namespace ecs
 		bool apply(F f, Tuple&& t)
 		{
 			typedef typename std::decay<Tuple>::type ttype;
-			return details::apply_impl<F, Tuple, 0 == std::tuple_size<ttype>::value, std::tuple_size<ttype>::value>::call(
-				f, std::forward<Tuple>(t));
+			return details::apply_impl<F, Tuple, 0 == std::tuple_size<ttype>::value, std::tuple_size<ttype>::value>::
+				call(
+					f, std::forward<Tuple>(t));
 		}
 
 		//template <class F, class Tuple, std::size_t... I>
@@ -63,61 +69,65 @@ namespace ecs
 		/// function_traits is used to determine function properties
 		/// such as parameter types (arguments) and return type.
 		///--------------------------------------------------------------------
-		template<typename T>
+		template <typename T>
 		struct function_traits
-			: public function_traits<decltype(&T::operator())> {
-		};
+			: public function_traits<decltype(&T::operator())> { };
+
 		// For generic types, directly use the result of the signature of its 'operator()'
 
-		template<typename ClassType, typename ReturnType, typename... Args>
-		struct function_traits<ReturnType(ClassType::*)(Args...) const>
+		template <typename ClassType, typename ReturnType, typename... Args>
+		struct function_traits<ReturnType(ClassType::*)(Args ...) const>
 			// we specialize for pointers to member function
 		{
 			enum { arg_count = sizeof...(Args) };
 
 			typedef ReturnType return_type;
 
-			template<size_t i>
+			template <size_t i>
 			struct arg_t {
 				typedef typename std::tuple_element<i, std::tuple<Args...>>::type type;
 			};
-			template<size_t i>
+
+			template <size_t i>
 			using arg = typename arg_t<i>::type;
 
-			template<size_t i>
+			template <size_t i>
 			struct arg_remove_ref_t {
 				typedef typename std::remove_reference<arg<i>>::type type;
 			};
-			template<size_t i>
+
+			template <size_t i>
 			using arg_remove_ref = typename arg_remove_ref_t<i>::type;
 
 			typedef std::tuple<Args...> args;
 		};
-        template <typename T>
-        struct is_callable {
-            template <typename U>
-            static char test(decltype(&U::operator()));
 
-            template <typename U>
-            static int test(...);
+		template <typename T>
+		struct is_callable {
+			template <typename U>
+			static char test(decltype(&U::operator()));
 
-            enum { value = sizeof(test<T>(0)) == sizeof(char) };
-        };
+			template <typename U>
+			static int test(...);
 
-        struct SystemIndex {
-            template <typename S>
-            static index_t index()
-            {
-                //ECS_ASSERT_IS_SYSTEM(S);
-                static index_t idx = count()++;
-                return idx;
-            }
-            static index_t& count()
-            {
-                static index_t counter = 0;
-                return counter;
-            }
-        };
+			enum { value = sizeof(test<T>(0)) == sizeof(char) };
+		};
+
+		struct SystemIndex {
+			template <typename S>
+			static index_t index()
+			{
+				//ECS_ASSERT_IS_SYSTEM(S);
+				static index_t idx = count()++;
+				return idx;
+			}
+
+			static index_t& count()
+			{
+				static index_t counter = 0;
+				return counter;
+			}
+		};
 
 		struct ComponentIndex {
 			template <typename C>
@@ -127,11 +137,12 @@ namespace ecs
 				static index_t idx = count()++;
 				return idx;
 			}
+
 			static index_t& count()
 			{
 				static index_t counter = 0;
 				return counter;
 			}
 		};
-    }
+	}
 }

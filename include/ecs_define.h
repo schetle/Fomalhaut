@@ -5,12 +5,11 @@
 #include <type_traits>
 #include <cassert>
 
-namespace ecs
-{
+namespace ecs {
 
-	using EntityID = uint32_t;
-	using index_t = uint32_t;
-	using ComponentIndexList = std::vector<index_t>;
+    using EntityID = uint32_t;
+    using index_t = uint32_t;
+    using ComponentIndexList = std::vector<index_t>;
 
 #define ECS_ASSERT(Expr, Msg) if(!(Expr)) throw std::runtime_error(Msg);
 
