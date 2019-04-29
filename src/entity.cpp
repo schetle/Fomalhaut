@@ -8,7 +8,7 @@ Entity::Entity(ComponentPool& pool, EntityID eid) : pool_(pool), eid_(eid) {}
 
 Entity::~Entity()
 {
-	DestroyAllComponent();
+	DestroyAllComponents();
 }
 
 Entity& Entity::AddComponent(const index_t index, BaseComponent* component) 
@@ -79,7 +79,7 @@ void Entity::ReplaceWith(const index_t index, BaseComponent * replacement)
 	}
 }
 
-void Entity::DestroyAllComponent()
+void Entity::DestroyAllComponents()
 {
 	for (const auto& kv : components_)
 	{
